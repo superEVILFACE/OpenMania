@@ -68,7 +68,7 @@ class ItemBox {
         this.Platform = null;
 
         // // OnCreate
-        this.PostCreated = false;
+        this.WasPostCreated = false;
 
         var planeFilter = this.PlaneFilter;
         if (planeFilter > 0 && (planeFilter - 1) & 2)
@@ -101,9 +101,9 @@ class ItemBox {
     }
 
     event PostCreate() {
-        if (this.PostCreated)
+        if (this.WasPostCreated)
             return;
-        this.PostCreated = true;
+        this.WasPostCreated = true;
 
         this.SetAnimation(4, 0);
 

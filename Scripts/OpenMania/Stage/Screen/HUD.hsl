@@ -33,9 +33,9 @@ class HUD {
         this.ButtonsSprite = Resources.LoadSprite("Sprites/Global/Mobile Buttons.bin", SCOPE_GAME);
         this.IsMobile = Device.IsMobile();
 
-        Texture.SetInterpolation(true);
+        // Texture.SetInterpolation(true);
         this.ButtonsImage = Resources.LoadImage("Images/VirtualDPad.png", SCOPE_GAME);
-        Texture.SetInterpolation(false);
+        // Texture.SetInterpolation(false);
 
         this.ShowMobileButtons = true;
         this.ShowMobileButtonsTimer = 1.0;
