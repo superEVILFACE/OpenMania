@@ -1,0 +1,6 @@
+*.log
+desktop.ini
+SourceFileMap.bin
+Resources/Objects/
+Resources/Objects/Objects.hcm
+*.exe

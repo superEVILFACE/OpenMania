@@ -273,8 +273,8 @@ class Ring {
         this.YSpeed += 0.0703125;
         this.Y += this.YSpeed;
 
-        var as = this.AngleSpeed;
-        this.Angle += as >> 6;
+        var ang = this.AngleSpeed;
+        this.Angle += ang >> 6;
 
         if (this.DeathTimer > 16) {
             var sin = Static.HexSin(this.Angle);
@@ -359,8 +359,8 @@ class Ring {
 
         var deathTimer = this.DeathTimer;
         if (!(deathTimer & 7)) {
-            if (as > 0x80)
-                this.AngleSpeed = as - 8;
+            if (ang > 0x80)
+                this.AngleSpeed = ang - 8;
         }
 
         this.Animate();
