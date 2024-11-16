@@ -280,10 +280,8 @@ class Static {
             // Right Side
             case 3: {
                 player.InputLock = 0;
-                if (player.InputRight && player.Ground) {
+                if (player.InputRight && player.Ground)
                     player.GroundSpeed = 0.5;
-                    player.X = Math.Floor(player.X);
-                }
                 break;
             }
             // Bottom Side
