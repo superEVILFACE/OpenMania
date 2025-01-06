@@ -48,11 +48,6 @@ class SpecialRing {
         this.UpdateRegionW = this.UpdateRegionH = 144.0;
         this.RenderRegionW = this.UpdateRegionW;
         this.RenderRegionH = this.UpdateRegionH;
-        
-        with ("Player" as player) {
-            player.Y = this.Y;
-            player.X = this.X - 50;
-        }
 
         var planeFilter = this.PlaneFilter;
         if (planeFilter > 0 && (planeFilter - 1) & 2)
