@@ -36,9 +36,9 @@ class Pinata {
     }
 
     event Pinata_Status_Normal() {
-        var enti;
+        var enti, other = this.CollidedWithObject("Player");
         // this.Player_BreakableCollide(other)
-        if (this.CollidedWithObject("Player")) {
+        if (other) {
             // Hurt
             if (other.CurrentAnimation == 18)
                 return;

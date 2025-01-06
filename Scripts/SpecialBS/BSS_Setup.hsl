@@ -10,7 +10,7 @@ class BSS_Setup {
         this.Load();
 
         this.BGM_SpecialStage = Resources.LoadMusic("Music/BlueSpheres.ogg", SCOPE_SCENE);
-        Music.Loop(this.BGM_SpecialStage, 0, true);
+        Music.Play(this.BGM_SpecialStage, 0);
 
         this.ColorFlip = false;
 
@@ -30,14 +30,14 @@ class BSS_Setup {
         this.Status = this.BSS_Setup_Status_Init;
     }
     Update() {
-        var input = Instance.GetNth("InputManager", 0);
-        if (!input)
-            return;
+        var up      = Input.ActionExists("Up") ? Input.IsActionPressed(this.PlayerID, "Up") : false;
+        var left    = Input.ActionExists("Left") ? Input.IsActionHeld(this.PlayerID, "Left") : false;
+        var right   = Input.ActionExists("Right") ? Input.IsActionHeld(this.PlayerID, "Right") : false;
 
         // hack
         if (this.PlayerTopSpeed == 0) {
             this.SpeedupTimer = 0;
-            if (input.UpPressed)
+            if (up)
                 this.PlayerTopSpeed = 16;
         }
 
@@ -70,9 +70,9 @@ class BSS_Setup {
 
         // Turning
         if (this.Direction == 0) {
-            if (input.Left)
+            if (left)
                 this.Direction =  1;
-            if (input.Right)
+            if (right)
                 this.Direction = -1;
         }
         if ((this.PlayerSteps & 0xF0) == 0 && this.Direction != 0 && this.PlayerZ == 0) {

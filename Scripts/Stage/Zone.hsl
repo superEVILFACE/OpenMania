@@ -25,6 +25,10 @@ event Zone_Load() {
 }
 
 class Zone {
+    Zone() {
+        Instance.Create("PauseManager", 0, 0);
+    }
+    
     event Create() {
         var sceneWidth = Scene.GetWidth() * 16.0;
         var sceneHeight = Scene.GetHeight() * 16.0;

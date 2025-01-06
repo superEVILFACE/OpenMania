@@ -47,10 +47,7 @@ class MusicObject {
 
         if (this.MusicIndex < 0)
             return;
-
-        if (this.TrackLoop > 0)
-            Music.Loop(this.MusicIndex, true, this.TrackLoop);
-        else
-            Music.Play(this.MusicIndex);
+        
+        Music.Play(this.MusicIndex, this.TrackLoop >= 0 ? this.TrackLoop : -1);
     }
 }

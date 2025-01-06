@@ -19,12 +19,11 @@ class SpecialRing {
         this.Sprite = Resources.LoadSprite("Sprites/Global/SpecialRing.bin", SCOPE_SCENE);
         this.SFX_SpecialRing = Resources.LoadSound("SoundFX/Global/SpecialRing.wav", SCOPE_SCENE);
         this.SFX_SpecialWarp = Resources.LoadSound("SoundFX/Global/SpecialWarp.wav", SCOPE_SCENE);
-
-        this.ArrayBufferIndex = 0;
-        Draw.InitArrayBuffer(this.ArrayBufferIndex, 0x200);
-        Draw.SetAmbientLighting(this.ArrayBufferIndex, 0.625, 0.625, 0.625);
-        Draw.SetDiffuseLighting(this.ArrayBufferIndex, 1.0, 1.0, 1.0);
-        Draw.SetSpecularLighting(this.ArrayBufferIndex, 0.25, 0.25, 0.25);
+        
+        this.ArrayBufferIndex = Scene3D.Create(SCOPE_SCENE);
+        Scene3D.SetAmbientLighting(this.ArrayBufferIndex, 0.625, 0.625, 0.625);
+        Scene3D.SetDiffuseLighting(this.ArrayBufferIndex, 1.0, 1.0, 1.0);
+        Scene3D.SetSpecularLighting(this.ArrayBufferIndex, 0.25, 0.25, 0.25);
 
         this.ViewMatrix = Matrix.Create();
         this.NormalMatrix = Matrix.Create();
@@ -49,12 +48,17 @@ class SpecialRing {
         this.UpdateRegionW = this.UpdateRegionH = 144.0;
         this.RenderRegionW = this.UpdateRegionW;
         this.RenderRegionH = this.UpdateRegionH;
+        
+        with ("Player" as player) {
+            player.Y = this.Y;
+            player.X = this.X - 50;
+        }
 
         var planeFilter = this.PlaneFilter;
         if (planeFilter > 0 && (planeFilter - 1) & 2)
             this.Priority = DrawGroup_FGHigh_High;
         else
-            this.Priority = DrawGroup_FGLow_Low;
+            this.Priority = DrawGroup_FGLow_High;
 
         this.Status = this.SpecialRing_Status_WaitForPlayer;
 
@@ -178,16 +182,16 @@ class SpecialRing {
                 rotZ = (Scene_Frame & 0x3FF) * Math_PI_DOUBLE / 1024.0;
             if (this.RingActive) {
                 Draw.SetBlendColor(0xF0F000, 1.0);
-                Draw.BindArrayBuffer(this.ArrayBufferIndex);
-                Draw.Model(this.Model, 0, this.ViewMatrix, this.NormalMatrix);
+                Draw3D.BindScene(this.ArrayBufferIndex);
+                Draw3D.Model(this.Model, 0, 0, this.ViewMatrix, this.NormalMatrix);
                 // Draw.ModelSimple(this.Model, 0, this.X, this.Y, this.Scale, 0x1E0 * Math_PI_DOUBLE / 0x400, rot, rot);
-                Draw.RenderArrayBuffer(this.ArrayBufferIndex, DrawMode_POLYGONS_SMOOTH);
+                Draw3D.RenderScene(this.ArrayBufferIndex, DrawMode_POLYGONS_SMOOTH);
             }
             else {
                 Draw.SetBlendColor(0x609090, 1.0);
-                Draw.BindArrayBuffer(this.ArrayBufferIndex);
-                Draw.Model(this.Model, 0, this.ViewMatrix, this.NormalMatrix);
-                Draw.RenderArrayBuffer(this.ArrayBufferIndex, DrawMode_LINES_SMOOTH);
+                Draw3D.BindScene(this.ArrayBufferIndex);
+                Draw3D.Model(this.Model, 0, 0, this.ViewMatrix, this.NormalMatrix);
+                Draw3D.RenderScene(this.ArrayBufferIndex, DrawMode_LINES_SMOOTH);
             }
         }
     }

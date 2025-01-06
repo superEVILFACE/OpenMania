@@ -1,10 +1,5 @@
 class ItemBox {
     event Create() {
-        if (this.PropertyExists("filter") && !(this.PropertyGet("filter") & Mode_MANIA)) {
-            this.Active = false;
-            return;
-        }
-
         /*
         Property: type    Type: int32
         Property: isFalling    Type: bool
@@ -67,7 +62,7 @@ class ItemBox {
         this.PlatformOffsetY = 0.0;
         this.Platform = null;
 
-        // // OnCreate
+        // OnCreate
         this.WasPostCreated = false;
 
         var planeFilter = this.PlaneFilter;
@@ -98,6 +93,11 @@ class ItemBox {
 
         // this.UpdateRegionW = this.UpdateRegionBackupW;
         // this.UpdateRegionH = this.UpdateRegionBackupH;
+        
+        if (this.PropertyExists("filter") && !(this.PropertyGet("filter") & Mode_MANIA)) {
+            this.Active = false;
+            return;
+        }
     }
 
     event PostCreate() {

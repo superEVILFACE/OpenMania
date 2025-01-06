@@ -1,4 +1,5 @@
 class ZipLine {
+    /*
     event Create(flag) {
         if (this.PropertyExists("filter") && !(this.PropertyGet("filter") & Mode_MANIA)) {
             this.Active = false;
@@ -191,4 +192,5 @@ class ZipLine {
         Draw.Sprite(this.Sprite, this.CurrentAnimation, 1, Math.Floor(this.StartX), Math.Floor(this.StartY), false, false);
         Draw.Sprite(this.Sprite, this.CurrentAnimation, 1, Math.Floor(this.EndX), Math.Floor(this.EndY), false, false);
     }
+    */
 }

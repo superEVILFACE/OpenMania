@@ -645,37 +645,38 @@ class Player {
 
     // Update events
     event Player_InputStatus_Human() {
-        var input = Instance.GetNth("InputManager", 0);
-        if (input) {
-            this.InputUp = input.Up;
-            this.InputDown = input.Down;
-            this.InputLeft = input.Left;
-            this.InputRight = input.Right;
-            this.InputJump = input.Accept | input.Decline;
-            this.InputJumpPressed = input.AcceptPressed | input.DeclinePressed;
+        this.InputUp            = Input.ActionExists("Up") ? Input.IsActionHeld(this.PlayerID, "Up") : false;
+        this.InputDown          = Input.ActionExists("Down") ? Input.IsActionHeld(this.PlayerID, "Down") : false;
+        this.InputLeft          = Input.ActionExists("Left") ? Input.IsActionHeld(this.PlayerID, "Left") : false;
+        this.InputRight         = Input.ActionExists("Right") ? Input.IsActionHeld(this.PlayerID, "Right") : false;
+        this.InputJump          = Input.ActionExists("A") ? Input.IsActionHeld(this.PlayerID, "A") : false;
+        this.InputJump |= Input.ActionExists("B") ? Input.IsActionHeld(this.PlayerID, "B") : false;
+        this.InputJump |= Input.ActionExists("C") ? Input.IsActionHeld(this.PlayerID, "C") : false;
+        this.InputJumpPressed   = Input.ActionExists("A") ? Input.IsActionPressed(this.PlayerID, "A") : false;
+        this.InputJumpPressed |= Input.ActionExists("B") ? Input.IsActionPressed(this.PlayerID, "B") : false;
+        this.InputJumpPressed |= Input.ActionExists("C") ? Input.IsActionPressed(this.PlayerID, "C") : false;
 
-            if (input.Extra1Pressed) {
-                if (global.GameMode == GameModes_TimeAttack) {
-                    global.SuppressTitlecard = true;
-                    Scene.Restart();
-                }
-                else if (this.SuperForm == SuperState_None && !this.Ground) {
-                    this.AnimationSpeedMult = 1.0;
-                    this.SetAnimation(47, 0);
-                    this.WaitTimer = 0;
-                    this.IsTransforming = true;
-                    this.SuperForm = SuperState_Transforming;
-                    this.XSpeed = this.YSpeed = 0.0;
-                }
+        if (Input.ActionExists("X") ? Input.IsActionPressed(this.PlayerID, "X") : false) {
+            if (global.GameMode == GameModes_TimeAttack) {
+                global.SuppressTitlecard = true;
+                Scene.Restart();
             }
-
-            if (input.Extra2Pressed) {
-                this.Character = (this.Character + 1) % 5;
-                this.ResetAnimation(this.CurrentAnimation, 0);
-                this.LoadCharacterSprites();
+            else if (this.SuperForm == SuperState_None && !this.Ground) {
+                this.AnimationSpeedMult = 1.0;
+                this.SetAnimation(47, 0);
+                this.WaitTimer = 0;
+                this.IsTransforming = true;
+                this.SuperForm = SuperState_Transforming;
+                this.XSpeed = this.YSpeed = 0.0;
             }
         }
 
+        if (Input.ActionExists("Y") ? Input.IsActionPressed(this.PlayerID, "Y") : false) {
+            this.Character = (this.Character + 1) % 5;
+            this.ResetAnimation(this.CurrentAnimation, 0);
+            this.LoadCharacterSprites();
+        }
+        
         // Touchscreen Controls
         if (Device.IsMobile()) {
             var vh = View.GetHeight(0);
@@ -719,7 +720,6 @@ class Player {
                 if (global.CanPause) {
                     dist = Math.Distance(vw - 64.0, 24.0, tx, ty);
                     if (dist < 48.0 && tP) {
-                        var pauseMan = Instance.GetNth("PauseManager", 0);
                         if (pauseMan)
                             pauseMan.StartPause();
                     }
@@ -727,6 +727,7 @@ class Player {
             }
         }
     }
+    
     event Player_InputStatus_AI() {
         var mainPlayer = null, aiPlayer = this;
         with ("Player") {

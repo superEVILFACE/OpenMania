@@ -238,9 +238,17 @@ class LevelSelect {
             this.FadeOutTimer--;
             if (this.FadeOutTimer == 0) {
                 var act = 1;
-                var input = Instance.GetNth("InputManager", 0);
-                if (input && (input.Accept || Touch.IsDown(0)))
+                
+                if (Touch.IsDown(0))
                     act = 0;
+                if (Input.ActionExists("A")) {
+                    if (Input.IsActionHeldByAny("A"))
+                        act = 0;
+                }
+                if (Input.ActionExists("Start")) {
+                    if (Input.IsActionHeldByAny("Start"))
+                        act = 0;
+                }
 
                 var saveData = global.SaveData;
                 saveData["SelectedCharacter"] = global.SelectedCharacter;
@@ -251,9 +259,12 @@ class LevelSelect {
             }
             return;
         }
-
-        var input = Instance.GetNth("InputManager", 0);
-        if (!input) return;
+        
+        var upPressed       = Input.ActionExists("Up") ? Input.IsActionPressedByAny("Up") : false;
+        var downPressed     = Input.ActionExists("Down") ? Input.IsActionPressedByAny("Down") : false;
+        var xPressed        = Input.ActionExists("X") ? Input.IsActionPressedByAny("X") : false;
+        var acceptPressed   = Input.ActionExists("A") ? Input.IsActionPressedByAny("A") : false;
+        acceptPressed |= Input.ActionExists("Start") ? Input.IsActionPressedByAny("Start") : false;
 
         var len = Array.Length(this.LevelArray);
 
@@ -264,35 +275,35 @@ class LevelSelect {
             var ty = Touch.GetY(0);
             if (tx < vw) {
                 if (ty < vh) {
-                    input.UpPressed = true;
+                    upPressed = true;
                 }
                 else {
-                    input.DownPressed = true;
+                    downPressed = true;
                 }
             }
             else {
                 if (ty < vh) {
-                    input.AcceptPressed = true;
+                    aPressed = true;
                 }
                 else {
-                    input.Extra1Pressed = true;
+                    xPressed = true;
                 }
             }
         }
 
-        if (input.UpPressed) {
+        if (upPressed) {
             this.SelectedLevel = (this.SelectedLevel - 1 + len) % len;
             Sound.Play(this.SFX_MenuBleep);
         }
-        if (input.DownPressed) {
+        if (downPressed) {
             this.SelectedLevel = (this.SelectedLevel + 1 + len) % len;
             Sound.Play(this.SFX_MenuBleep);
         }
-        if (input.Extra1Pressed) {
+        if (xPressed) {
             global.SelectedCharacter = (global.SelectedCharacter + 1) % 5;
             Sound.Play(this.SFX_MenuBleep);
         }
-        if (input.AcceptPressed) {
+        if (acceptPressed) {
             this.FadeOutTimer = 30;
             Sound.Play(this.SFX_MenuAccept);
         }

@@ -114,10 +114,7 @@ class HUD {
 
                     tryingToSkip |= Touch.IsDown(0);
                     tryingToSkip |= Input.IsMouseButtonDown(0);
-                    var input = Instance.GetNth("InputManager", 0);
-                    if (input) {
-                        tryingToSkip |= input.Pause;
-                    }
+                    tryingToSkip |= Input.ActionExists("Start") ? Input.IsActionHeld(this.PlayerID, "Start") : false;
 
                     if (tryingToSkip) {
                         var amountToSubtract = 100;
@@ -268,7 +265,7 @@ class HUD {
         Music.Play(this.BGM_ActClear);
 
         // this.BGM_Miniboss = Resources.LoadMusic("Music/miniboss.ogg", SCOPE_GAME);
-        // Music.Loop(this.BGM_Miniboss, true, 115056); // 2.609 seconds
+        // Music.Play(this.BGM_Miniboss, 115056); // 2.609 seconds
 
         if (time < 60 * 60)
             this.ShowResultsTimerTotal = 50000;

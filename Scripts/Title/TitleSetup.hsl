@@ -187,15 +187,12 @@ class TitleSetup {
         }
     }
     TitleSetup_Status_WaitForPlayerInput() {
-        var input = Instance.GetNth("InputManager", 0);
-        if (input) {
-            if (Touch.IsPressed(0) || input.AnyPressed) {
-                Sound.Play(TitleSetup_SFX_MenuAccept);
-                Music.Clear();
-                this.FadeValue = 0;
-                this.Status = this.TitleSetup_Status_FadeToMenu;
-                this.RenderStatus = this.TitleSetup_RenderStatus_Fade;
-            }
+        if (Touch.IsPressed(0) || Input.IsAnyActionPressedByAny()) {
+            Sound.Play(TitleSetup_SFX_MenuAccept);
+            Music.Clear();
+            this.FadeValue = 0;
+            this.Status = this.TitleSetup_Status_FadeToMenu;
+            this.RenderStatus = this.TitleSetup_RenderStatus_Fade;
         }
     }
     TitleSetup_Status_FadeToMenu() {

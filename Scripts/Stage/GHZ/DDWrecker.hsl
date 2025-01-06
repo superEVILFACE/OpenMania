@@ -172,7 +172,7 @@ class DDWrecker {
             if (music) {
                 // music
                 var MSC_BossMini = Resources.LoadMusic("Music/BossMini.ogg", SCOPE_SCENE);
-                Music.Loop(MSC_BossMini, true, 276105);
+                Music.Play(MSC_BossMini, 276105);
             }
             this.WaitTimer++;
         }
