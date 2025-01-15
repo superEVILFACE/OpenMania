@@ -656,7 +656,7 @@ class Player {
         this.InputJumpPressed |= Input.ActionExists("B") ? Input.IsActionPressed(this.PlayerID, "B") : false;
         this.InputJumpPressed |= Input.ActionExists("C") ? Input.IsActionPressed(this.PlayerID, "C") : false;
 
-        if (Input.ActionExists("X") ? Input.IsActionPressed(this.PlayerID, "X") : false) {
+        /*if (Input.ActionExists("X") ? Input.IsActionPressed(this.PlayerID, "X") : false) {
             if (global.GameMode == GameModes_TimeAttack) {
                 global.SuppressTitlecard = true;
                 Scene.Restart();
@@ -669,9 +669,9 @@ class Player {
                 this.SuperForm = SuperState_Transforming;
                 this.XSpeed = this.YSpeed = 0.0;
             }
-        }
+        }*/
 
-        if (Input.ActionExists("Y") ? Input.IsActionPressed(this.PlayerID, "Y") : false) {
+        if (DebugMode.Active && Input.ActionExists("Y") ? Input.IsActionPressed(this.PlayerID, "Y") : false) {
             this.Character = (this.Character + 1) % 5;
             this.ResetAnimation(this.CurrentAnimation, 0);
             this.LoadCharacterSprites();

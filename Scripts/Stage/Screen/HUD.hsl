@@ -425,7 +425,7 @@ class HUD {
             // Score (Value)
             this.DrawNumber(hud_x + 100.0, hud_y + 14.0, score, num_anim);
 
-            if (!drawMobile) {
+            if (!drawMobile && DebugMode.Active) {
                 var px, py;
                 px = (Number.AsInteger(player.X) + 0x10000) & 0xFFFF;
                 py = (Number.AsInteger(player.Y) + 0x10000) & 0xFFFF;

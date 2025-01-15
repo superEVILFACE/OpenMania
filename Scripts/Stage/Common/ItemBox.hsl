@@ -98,6 +98,8 @@ class ItemBox {
             this.Active = false;
             return;
         }
+
+        DebugMode_AddObject("ItemBox", this.DebugCreate, this.DebugRender);
     }
 
     event PostCreate() {
@@ -652,5 +654,17 @@ class ItemBox {
             // Snow
             Draw.Sprite(this.Sprite, this.CurrentAnimation, this.CurrentFrame, x, y, flipX, flipY);
         }
+    }
+
+    event DebugCreate()
+    {
+        Instance.Create("ItemBox", DebugMode.X, DebugMode.Y).Type = DebugMode.ItemType;
+    }
+    
+    event DebugRender()
+    {
+        DebugMode.ItemTypeCount = 18;
+        Draw.Sprite(Resources.LoadSprite("Sprites/Global/ItemBox.bin", SCOPE_GAME), 0, 0, DebugMode.Player.X, DebugMode.Player.Y, false, false);
+        Draw.Sprite(Resources.LoadSprite("Sprites/Global/ItemBox.bin", SCOPE_GAME), 2, DebugMode.ItemType, DebugMode.Player.X, DebugMode.Player.Y-3, false, false);
     }
 }

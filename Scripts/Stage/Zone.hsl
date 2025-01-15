@@ -27,9 +27,11 @@ event Zone_Load() {
 class Zone {
     Zone() {
         Instance.Create("PauseManager", 0, 0);
+        DebugMode.Create(Instance.GetNth("Player", 0));
     }
     
     event Create() {
+        this.Priority = DrawGroup_HUD-1;
         var sceneWidth = Scene.GetWidth() * 16.0;
         var sceneHeight = Scene.GetHeight() * 16.0;
         var maxPlayerCount = 8;
@@ -203,6 +205,12 @@ class Zone {
                 }
             }
         }
+        DebugMode.Update();
+    }
+
+    event Render()
+    {
+        DebugMode.Render();
     }
 
     Zone_BackupGameState() {

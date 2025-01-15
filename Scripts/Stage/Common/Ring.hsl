@@ -119,6 +119,8 @@ class Ring {
             this.UpdateRegionW *= 2.0;
             this.UpdateRegionH *= 2.0;
         }
+
+        DebugMode_AddObject("Ring", this.DebugCreate, this.DebugRender);
     }
 
     event SetFrameCount() {
@@ -618,5 +620,16 @@ class Ring {
     event Render() {
         if (this.RenderStatus)
             this.RenderStatus();
+    }
+
+    event DebugCreate()
+    {
+        Instance.Create("Ring", DebugMode.X, DebugMode.Y);
+    }
+
+    event DebugRender()
+    {
+        DebugMode.ItemTypeCount = 0;
+        Draw.Sprite(Resources.LoadSprite("Sprites/Global/Ring.bin", SCOPE_GAME), 0, 0, DebugMode.Player.X, DebugMode.Player.Y, false, false);
     }
 }

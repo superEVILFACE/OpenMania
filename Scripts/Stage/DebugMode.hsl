@@ -1,11 +1,120 @@
+event DebugMode_AddObject(id, createcb, rendercb)
+{
+    for (var i = 0; i < Array.Length(DebugMode.ObjectIDs); i++)
+        if (DebugMode.ObjectIDs[i] == id)
+            return;
+
+    if (DebugMode.ItemCount < Array.Length(DebugMode.DebugCallbacks))
+    {
+        DebugMode.ObjectIDs[DebugMode.ItemCount] = id;
+        DebugMode.DebugCallbacks[DebugMode.ItemCount] = [createcb, rendercb];
+        DebugMode.ItemCount++;
+    }
+}
+
 class DebugMode {
-    event Create() {
 
+    Create(data) 
+    {
+        this.Active              = false;
+        this.Animator            = Animator.Create();
+        this.CurrentItem         = 0;
+        this.DebugCallbacks      = Array.Create(256, [null, null]);
+        this.ItemCount           = 0;
+        this.ItemSprite          = null;
+        this.ItemType            = 0;
+        this.ItemTypeCount       = 0;
+        this.ObjectIDs           = Array.Create(256, "Blank_Object");
+        this.Player              = data;
+        this.Velocity            = 0;
+        this.X                   = 0;
+        this.Y                   = 0;
     }
-    event Update() {
 
+    Toggle()
+    {
+        DebugMode.Active = !DebugMode.Active;
+        print(DebugMode.Active ? "[DebugMode.Toggle] Enabled" : "[DebugMode.Toggle] Disabled");
+
+        this.Player.GroundSpeed = 0.0;
+        this.Player.XSpeed = 0.0;
+        this.Player.YSpeed = 0.0;
+        this.Player.Status = (DebugMode.Active) ? this.Player.Player_StatusNone : this.Player.Player_StatusStanding;
+        this.Player.LateUpdateAirStatus = null;
+        this.Player.LateUpdateGroundStatus = null;
+        this.Player.Interactable = !DebugMode.Active;
+        this.Player.Visible = !DebugMode.Active;
+
+        this.X = this.Player.X;
+        this.Y = this.Player.Y;
     }
-    event Render() {
-        // DebugMode
+
+    HandleItem()
+    {
+        var aPressed = Input.ActionExists("A") ? Input.IsActionPressed(this.Player.PlayerID, "A") : false;
+        var bPressed = Input.ActionExists("B") ? Input.IsActionPressed(this.Player.PlayerID, "B") : false;
+        var cPressed = Input.ActionExists("C") ? Input.IsActionPressed(this.Player.PlayerID, "C") : false;
+
+        if (aPressed)
+        {
+            DebugMode.CurrentItem++;
+			DebugMode.CurrentItem %= DebugMode.ItemCount;
+            DebugMode.ItemType = 0;
+        }
+
+        if (bPressed)
+        {
+            if (DebugMode.ItemType >= DebugMode.ItemTypeCount - 1)
+                DebugMode.ItemType = 0;
+            else
+                DebugMode.ItemType++;
+        }
+
+        if (cPressed && DebugMode.DebugCallbacks[DebugMode.CurrentItem][0])
+        {
+			DebugMode.DebugCallbacks[DebugMode.CurrentItem][0]();
+            print("[DebugMode.HandleItem] Spawned "+DebugMode.ObjectIDs[DebugMode.CurrentItem]);
+        }
+    }
+
+    HandlePlayer()
+    {       
+        this.X += (this.Player.InputLeft ? -this.Velocity : 0) + (this.Player.InputRight ? this.Velocity : 0);
+        this.Y += (this.Player.InputUp ? -this.Velocity : 0) + (this.Player.InputDown ? this.Velocity : 0);
+
+        if (this.Player.InputLeft || this.Player.InputRight || this.Player.InputUp || this.Player.InputDown) 
+        {
+            this.Velocity += 0.046875;
+            if (this.Velocity > 16.0)
+                this.Velocity = 16.0;
+        } 
+        else
+            this.Velocity = 0.0;
+
+        this.Player.X = this.X;
+        this.Player.Y = this.Y;
+    }
+
+    Update() 
+    {
+        var extraPressed = Input.ActionExists("X") ? Input.IsActionPressed(this.Player.PlayerID, "X") : false;
+
+        if (extraPressed)
+            this.Toggle();
+
+        if (DebugMode.Active)
+        {
+            this.HandleItem();
+            this.HandlePlayer();
+        }
+    }
+
+    Render() 
+    {
+        if (!DebugMode.Active)
+            return;
+
+        if (DebugMode.DebugCallbacks[DebugMode.CurrentItem][1])
+			DebugMode.DebugCallbacks[DebugMode.CurrentItem][1]();
     }
 }
